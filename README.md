@@ -1,16 +1,24 @@
 # tipr_mobile
 
-A new Flutter project.
+## features to add
+- Tip calculator
+  - enter bill amount
+  - enter tip %
+  - get total $
+  - get tip $
+- use numpad instead of text to enter
+- use dropdown for tip %
 
-## Getting Started
+### wish
+- add home screen widget
+- add support for wearos
+- export to mobile
+- export to iOS
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## docs:
+- form
+  - https://api.flutter.dev/flutter/widgets/Form-class.html
+- widget
+  - https://codelabs.developers.google.com/flutter-home-screen-widgets
+- wear os
+  - https://verygood.ventures/blog/building-wear-os-apps-with-flutter-a-very-good-guide

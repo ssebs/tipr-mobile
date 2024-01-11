@@ -16,86 +16,118 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade700),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'tipr Tip Calculator'),
+      home: const SafeArea(child: TiprHome()),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class TiprHome extends StatelessWidget {
+  const TiprHome({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        title: const Text("Tipr"),
+      ),
+      body: const Center(
+        child: CalcForm(),
+      ),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class CalcForm extends StatefulWidget {
+  const CalcForm({super.key});
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  @override
+  State<CalcForm> createState() => _CalcFormState();
+}
 
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-    });
+class _CalcFormState extends State<CalcForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  double billAmount = 0.0;
+  double tipPercentage = 0.15;
+
+  var tipAmount = 0.0;
+  var totalAmount = 0.0;
+
+  /// alert will snow a snackbar
+  void alert(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
+    return Center(
+      child: Form(
+        key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: const Text("reset"),
-                    action: SnackBarAction(
-                      label: "RESET COUNT",
-                      onPressed: _resetCounter,
-                    ),
-                  ));
+          children: [
+            SizedBox(
+              width: 200,
+              child: TextFormField(
+                initialValue: "",
+                onChanged: (value) => setState(() {
+                  //check if num
+                  if (value != "") {
+                    try {
+                      // calculate tip + total
+                      billAmount = double.parse(value);
+
+                      tipAmount = billAmount * tipPercentage;
+                      totalAmount = tipAmount + billAmount;
+                    } catch (e) {
+                      alert(context, "$value is not a number");
+                      _formKey.currentState?.reset();
+                    }
+                  }
+                }),
+                autofocus: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter the bill amount",
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    alert(context, "Enter something");
+                  }
+                  return null;
                 },
-                child: const Text("blah"))
+              ),
+            ),
+            SizedBox(
+              width: 300,
+              height: 64,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Tip Amount"),
+                  Text("$tipAmount"),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 300,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Total Amount"),
+                  Text("$totalAmount"),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
