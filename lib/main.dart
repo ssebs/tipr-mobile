@@ -45,23 +45,25 @@ class CalcForm extends StatefulWidget {
   State<CalcForm> createState() => _CalcFormState();
 }
 
-enum TipPercentageLabel {
-  t12('12', 0.12),
-  t15('15', 0.15),
-  t18('18', 0.18),
-  t20('20', 0.20);
+// enum TipPercentageLabel {
+//   t12('12', 0.12),
+//   t15('15', 0.15),
+//   t18('18', 0.18),
+//   t20('20', 0.20);
 
-  const TipPercentageLabel(this.label, this.percentage);
-  final String label;
-  final double percentage;
-}
+//   const TipPercentageLabel(this.label, this.percentage);
+//   final String label;
+//   final double percentage;
+// }
 
 class _CalcFormState extends State<CalcForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController tipController = TextEditingController();
 
+  var tipOptions = [12, 15, 18, 20];
+
   double billAmount = 0.0;
-  double tipPercentage = TipPercentageLabel.t15.percentage;
+  int tipPercentage = 15;
 
   var tipAmount = 0.0;
   var totalAmount = 0.0;
@@ -75,10 +77,32 @@ class _CalcFormState extends State<CalcForm> {
     );
   }
 
+  // calculate the tip from the tipPercentage, billAmount.
+  // updates tipAmount and totalAmount
   void _calculate() {
     setState(() {
-      tipAmount = billAmount * tipPercentage;
+      tipAmount = billAmount * (tipPercentage / 100);
       totalAmount = tipAmount + billAmount;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    tipController.addListener(() {
+      final String item = tipController.value.text;
+
+      //check if num
+      if (item != "") {
+        try {
+          // calculate tip + total
+          tipPercentage = int.parse(item);
+          _calculate();
+        } catch (e) {
+          _formKey.currentState?.reset();
+          tipController.value = const TextEditingValue(text: "15");
+        }
+      }
     });
   }
 
@@ -90,6 +114,7 @@ class _CalcFormState extends State<CalcForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Bill amount
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -112,7 +137,7 @@ class _CalcFormState extends State<CalcForm> {
                   autofocus: true,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Enter the bill amount",
+                    label: Text("Bill \$"),
                   ),
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -124,29 +149,27 @@ class _CalcFormState extends State<CalcForm> {
                 ),
               ),
             ),
+            // Tip %
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 width: 100,
-                child: DropdownMenu<TipPercentageLabel>(
-                  initialSelection: TipPercentageLabel.t15,
-                  onSelected: (value) => setState(() {
-                    tipPercentage = value!.percentage;
-                    _calculate();
-                  }),
+                child: DropdownMenu<int>(
+                  initialSelection: 15,
+                  controller: tipController,
                   label: const Text("Tip %"),
-                  dropdownMenuEntries: TipPercentageLabel.values
-                      .map<DropdownMenuEntry<TipPercentageLabel>>(
-                    (TipPercentageLabel tpl) {
-                      return DropdownMenuEntry<TipPercentageLabel>(
+                  dropdownMenuEntries: [
+                    ...tipOptions.map((int tpl) {
+                      return DropdownMenuEntry<int>(
                         value: tpl,
-                        label: tpl.label,
+                        label: "$tpl",
                       );
-                    },
-                  ).toList(),
+                    }),
+                  ],
                 ),
               ),
             ),
+            // Display amounts
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
