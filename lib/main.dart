@@ -75,21 +75,23 @@ class _CalcFormState extends State<CalcForm> {
   @override
   void initState() {
     super.initState();
+    bool isFirstGo = true;
     tipController.addListener(() {
       final String item = tipController.value.text;
 
       //check if num
-      if (item != "") {
+      if (item != "" && !isFirstGo) {
         try {
           // calculate tip + total
           tipPercentage = int.parse(item);
           _calculate();
         } catch (e) {
-          _formKey.currentState?.reset();
+          // _formKey.currentState?.reset();
           tipController.value = const TextEditingValue(text: "15");
         }
       }
     });
+    isFirstGo = false;
   }
 
   @override
