@@ -1,4 +1,4 @@
-package com.example.tipr_mobile
+package com.ssebs.tipr_mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
