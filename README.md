@@ -3,7 +3,9 @@
 Tip calculator that gives you both the tip amount, and the total amount for the bill.
 
 > Mobile version of https://github.com/ssebs/tipr
-> Web version demo https://ssebs.github.io/tipr/ 
+> Web version demo https://ssebs.github.io/tipr/
+
+Android release: https://play.google.com/store/apps/details?id=com.ssebs.tipr_mobile&hl=en_US&gl=US
 
 ## features to add
 - [x] Tip calculator
