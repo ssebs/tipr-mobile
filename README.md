@@ -1,16 +1,18 @@
 # tipr_mobile
 
+Tip calculator that gives you both the tip amount, and the total amount for the bill.
+
 > Mobile version of https://github.com/ssebs/tipr
 > Web version demo https://ssebs.github.io/tipr/ 
 
 ## features to add
-- Tip calculator
-  - enter bill amount
-  - enter tip %
-  - get total $
-  - get tip $
-- use numpad instead of text to enter
-- use dropdown for tip %
+- [x] Tip calculator
+  - [x] enter bill amount
+  - [x] enter tip %
+  - [x] get total $
+  - [x] get tip $
+- [x] use numpad instead of text to enter
+- [x] use dropdown for tip %
 
 ### wish
 - add home screen widget
