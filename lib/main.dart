@@ -27,14 +27,11 @@ class TiprHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: const Text("Tipr"),
-      ),
-      body: const Center(
-        child: CalcForm(),
-      ),
-    );
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          title: const Text("Tipr"),
+        ),
+        body: const CalcForm());
   }
 }
 
@@ -44,17 +41,6 @@ class CalcForm extends StatefulWidget {
   @override
   State<CalcForm> createState() => _CalcFormState();
 }
-
-// enum TipPercentageLabel {
-//   t12('12', 0.12),
-//   t15('15', 0.15),
-//   t18('18', 0.18),
-//   t20('20', 0.20);
-
-//   const TipPercentageLabel(this.label, this.percentage);
-//   final String label;
-//   final double percentage;
-// }
 
 class _CalcFormState extends State<CalcForm> {
   final _formKey = GlobalKey<FormState>();
@@ -108,6 +94,9 @@ class _CalcFormState extends State<CalcForm> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Center(
       child: Form(
         key: _formKey,
@@ -115,88 +104,121 @@ class _CalcFormState extends State<CalcForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Bill amount
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 200,
-                child: TextFormField(
-                  initialValue: "",
-                  onChanged: (value) => setState(() {
-                    //check if num
-                    if (value != "") {
-                      try {
-                        // calculate tip + total
-                        billAmount = double.parse(value);
-                        _calculate();
-                      } catch (e) {
-                        alert(context, "$value is not a number");
-                        _formKey.currentState?.reset();
-                      }
-                    }
-                  }),
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Bill \$"),
+            SizedBox(
+              width: 400,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    width: 200,
+                    child: TextFormField(
+                      initialValue: "",
+                      onChanged: (value) => setState(() {
+                        //check if num
+                        if (value != "") {
+                          try {
+                            // calculate tip + total
+                            billAmount = double.parse(value);
+                            _calculate();
+                          } catch (e) {
+                            alert(context, "$value is not a number");
+                            _formKey.currentState?.reset();
+                          }
+                        }
+                      }),
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text("Bill \$"),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          alert(context, "Enter something");
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      alert(context, "Enter something");
-                    }
-                    return null;
-                  },
-                ),
+
+                  // Tip %
+                  SizedBox(
+                    width: 100,
+                    child: DropdownMenu<int>(
+                      initialSelection: 15,
+                      controller: tipController,
+                      label: const Text("Tip %"),
+                      dropdownMenuEntries: [
+                        ...tipOptions.map((int tpl) {
+                          return DropdownMenuEntry<int>(
+                            value: tpl,
+                            label: "$tpl",
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(
+                    width: 10, // custom HACK
+                  ),
+                ],
               ),
             ),
-            // Tip %
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 100,
-                child: DropdownMenu<int>(
-                  initialSelection: 15,
-                  controller: tipController,
-                  label: const Text("Tip %"),
-                  dropdownMenuEntries: [
-                    ...tipOptions.map((int tpl) {
-                      return DropdownMenuEntry<int>(
-                        value: tpl,
-                        label: "$tpl",
-                      );
-                    }),
-                  ],
+
+            const SizedBox(
+              height: 40,
+            ),
+
+            // Display amounts if not 0
+            if (tipAmount != 0)
+              Center(
+                child: Container(
+                  width: 416,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.greenAccent[700],
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: Column(
+                          children: [
+                            Text(
+                              "Tip Amount",
+                              style: textTheme.headlineSmall,
+                            ),
+                            Text(
+                              "\$${tipAmount.toStringAsFixed(2)}",
+                              style: textTheme.headlineLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: Column(
+                          children: [
+                            Text(
+                              "Total Amount",
+                              style: textTheme.headlineSmall,
+                            ),
+                            Text(
+                              "\$${totalAmount.toStringAsFixed(2)}",
+                              style: textTheme.headlineLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // Display amounts
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 300,
-                height: 64,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Tip Amount"),
-                    Text("$tipAmount"),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 300,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Total Amount"),
-                    Text("$totalAmount"),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
