@@ -1,5 +1,8 @@
 # tipr_mobile
 
+> Mobile version of https://github.com/ssebs/tipr
+> Web version demo https://ssebs.github.io/tipr/ 
+
 ## features to add
 - Tip calculator
   - enter bill amount
