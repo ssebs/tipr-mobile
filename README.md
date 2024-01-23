@@ -14,7 +14,9 @@ Android release: https://play.google.com/store/apps/details?id=com.ssebs.tipr_mo
   - [x] get total $
   - [x] get tip $
 - [x] use numpad instead of text to enter
-- [x] use dropdown for tip %
+- ~~[x] use dropdown for tip %~~
+- [ ] 3 boxes for tip options (like the memes)
+  - 15, 18, custom
 
 ### wish
 - add home screen widget
