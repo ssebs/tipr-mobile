@@ -17,6 +17,20 @@ Android release: https://play.google.com/store/apps/details?id=com.ssebs.tipr_mo
 - ~~[x] use dropdown for tip %~~
 - [ ] 3 boxes for tip options (like the memes)
   - 15, 18, custom
+- [ ] "flush" round number mode
+  - total amount rounds up by 5's.
+  - e.g. bill of $62.52, tip of ~15-18%, total ends up being $75
+    - enter bill
+    - enter "suggested" tip percentage
+    - calc tip amount
+      - `bill * tip percentage`
+    - calc total amount
+      - `tip amount + bill`
+      - round total to nearest 5
+        - `new total`
+      - "new total" - `total amount`
+        - update tip amount to this
+        - calc tip percentage from tip amount
 
 ### wish
 - add home screen widget
