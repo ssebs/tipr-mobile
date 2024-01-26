@@ -20,7 +20,7 @@ class TiprHome extends StatelessWidget {
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.blue.shade700,
+            backgroundColor: Colors.green.shade700,
             title: const Text(
               "Tipr",
               style: TextStyle(color: Colors.white),
