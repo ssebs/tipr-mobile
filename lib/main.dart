@@ -14,7 +14,7 @@ class TiprHome extends StatelessWidget {
     return MaterialApp(
       title: 'tipr',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade700),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
       home: SafeArea(
@@ -141,7 +141,7 @@ class _CalcFormState extends State<CalcForm> {
             child: Column(children: [
               // "tip"
               const Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Text(
                   "Tip %",
                   style: TextStyle(

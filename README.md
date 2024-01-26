@@ -15,7 +15,7 @@ Android release: https://play.google.com/store/apps/details?id=com.ssebs.tipr_mo
   - [x] get tip $
 - [x] use numpad instead of text to enter
 - ~~[x] use dropdown for tip %~~
-- [ ] 3 boxes for tip options (like the memes)
+- [x] 3 boxes for tip options (like the memes)
   - 15, 18, custom
 - [ ] "flush" round number mode
   - total amount rounds up by 5's.
@@ -35,7 +35,6 @@ Android release: https://play.google.com/store/apps/details?id=com.ssebs.tipr_mo
 ### wish
 - add home screen widget
 - add support for wearos
-- export to mobile
 - export to iOS
 
 ## docs:
